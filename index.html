@@ -1,309 +1,624 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rizo, I Have an Important Question</title>
-<style>
-  * {
-    box-sizing: border-box;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rizo, I Have an Important Question</title>
 
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
-    background: linear-gradient(to top, #ffd6e8, #fff4fb, #e8f8ff);
-    text-align: center;
-    height: 100vh;
-    position: relative;
-  }
-
-  h1 {
-    margin-top: 70px;
-    font-size: 2.8em;
-    color: #c2185b;
-    text-shadow: 0 2px 10px rgba(255,255,255,0.7);
-    z-index: 2;
-    position: relative;
-  }
-
-  p {
-    font-size: 1.2em;
-    color: #6a3552;
-    z-index: 2;
-    position: relative;
-  }
-
-  .buttons {
-    margin-top: 40px;
-    position: relative;
-    z-index: 3;
-  }
-
-  .btn {
-    padding: 16px 34px;
-    font-size: 18px;
-    border: none;
-    border-radius: 14px;
-    cursor: pointer;
-    margin: 10px;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  }
-
-  .btn:hover {
-    transform: scale(1.08);
-  }
-
-  #yes {
-    background: linear-gradient(45deg, #ff4f9a, #ff85c2);
-    color: white;
-  }
-
-  #no {
-    background: linear-gradient(45deg, #7a7a7a, #a8a8a8);
-    color: white;
-  }
-
-  #reaction {
-    margin-top: 25px;
-    font-size: 2.1em;
-    min-height: 60px;
-    z-index: 3;
-    position: relative;
-  }
-
-  #sadMessage {
-    font-size: 1.2em;
-    color: #7a3b55;
-    min-height: 32px;
-    z-index: 3;
-    position: relative;
-  }
-
-  .heart {
-    position: absolute;
-    font-size: 24px;
-    animation: floatUp 4s linear forwards;
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  @keyframes floatUp {
-    0% {
-      transform: translateY(0) scale(0.7);
-      opacity: 1;
+  <style>
+    :root {
+      --bg1: #fff7fb;
+      --bg2: #ffe2ef;
+      --bg3: #dff6ff;
+      --pink: #ff4f9a;
+      --pink-dark: #d81b60;
+      --pink-soft: #ff93c3;
+      --text: #6b3550;
+      --white-glass: rgba(255, 255, 255, 0.35);
+      --white-line: rgba(255, 255, 255, 0.5);
+      --shadow: 0 16px 45px rgba(216, 27, 96, 0.14);
     }
-    100% {
-      transform: translateY(-220px) scale(1.4);
-      opacity: 0;
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
-  }
 
-  .grass {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 120px;
-    background: linear-gradient(to top, #3f9b3a, #7fd96d);
-    z-index: 1;
-  }
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
 
-  .grass::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(circle at 10% 100%, #2d7f2f 0 18px, transparent 19px),
-      radial-gradient(circle at 20% 100%, #2f8f33 0 16px, transparent 17px),
-      radial-gradient(circle at 35% 100%, #318b35 0 20px, transparent 21px),
-      radial-gradient(circle at 50% 100%, #2b7a2c 0 18px, transparent 19px),
-      radial-gradient(circle at 65% 100%, #318b35 0 22px, transparent 23px),
-      radial-gradient(circle at 80% 100%, #2f8f33 0 18px, transparent 19px),
-      radial-gradient(circle at 92% 100%, #2d7f2f 0 16px, transparent 17px);
-    opacity: 0.7;
-  }
+    body {
+      position: relative;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 18%, rgba(255,255,255,0.85) 0 8%, transparent 9%),
+        radial-gradient(circle at 82% 12%, rgba(255,255,255,0.7) 0 7%, transparent 8%),
+        linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 55%, var(--bg3) 100%);
+    }
 
-  .butterfly {
-    position: absolute;
-    font-size: 28px;
-    animation: fly 12s linear infinite;
-    opacity: 0.9;
-    z-index: 2;
-  }
+    .orb,
+    .orb2,
+    .orb3 {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(28px);
+      pointer-events: none;
+      z-index: 0;
+      animation: floatBlob 10s ease-in-out infinite alternate;
+    }
 
-  .b1 { left: 5%; bottom: 90px; animation-delay: 0s; }
-  .b2 { left: 20%; bottom: 60px; animation-delay: 2s; }
-  .b3 { left: 45%; bottom: 100px; animation-delay: 4s; }
-  .b4 { left: 70%; bottom: 70px; animation-delay: 1s; }
-  .b5 { left: 85%; bottom: 80px; animation-delay: 3s; }
+    .orb {
+      width: 190px;
+      height: 190px;
+      background: rgba(255, 180, 213, 0.45);
+      top: 4%;
+      left: -45px;
+    }
 
-  @keyframes fly {
-    0%   { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0; }
-    10%  { opacity: 1; }
-    25%  { transform: translate(40px, -80px) scale(1.05) rotate(8deg); }
-    50%  { transform: translate(-20px, -160px) scale(1.1) rotate(-6deg); }
-    75%  { transform: translate(60px, -240px) scale(1.05) rotate(10deg); }
-    100% { transform: translate(0, -340px) scale(1.15) rotate(-8deg); opacity: 0; }
-  }
+    .orb2 {
+      width: 220px;
+      height: 220px;
+      background: rgba(194, 236, 255, 0.5);
+      right: -60px;
+      top: 20%;
+      animation-duration: 12s;
+    }
 
-  .sparkle {
-    position: absolute;
-    font-size: 20px;
-    animation: twinkle 3s ease-in-out infinite;
-    z-index: 2;
-    opacity: 0.8;
-  }
+    .orb3 {
+      width: 160px;
+      height: 160px;
+      background: rgba(255, 217, 235, 0.45);
+      bottom: 12%;
+      left: 30%;
+      animation-duration: 14s;
+    }
 
-  @keyframes twinkle {
-    0%, 100% { transform: scale(0.8); opacity: 0.4; }
-    50% { transform: scale(1.3); opacity: 1; }
-  }
+    @keyframes floatBlob {
+      from {
+        transform: translateY(0) translateX(0) scale(1);
+      }
+      to {
+        transform: translateY(18px) translateX(10px) scale(1.06);
+      }
+    }
 
-  .hidden {
-    display: none;
-  }
+    .screen {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 16px 120px;
+    }
 
-  #yesScreen {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, #fff0f7, #fffafc, #eafcff);
-    display: none;
-    overflow: hidden;
-  }
+    .screen.active {
+      display: flex;
+    }
 
-  #yesContent {
-    position: relative;
-    z-index: 5;
-    margin-top: 80px;
-    padding: 20px;
-  }
+    .card {
+      position: relative;
+      width: min(100%, 430px);
+      padding: 26px 18px 24px;
+      border-radius: 28px;
+      background: var(--white-glass);
+      border: 1px solid var(--white-line);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      text-align: center;
+      overflow: hidden;
+      animation: riseIn 0.8s ease;
+    }
 
-  #yesContent h1 {
-    margin-top: 0;
-    font-size: 3em;
-    color: #d81b60;
-  }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.42), rgba(255,255,255,0.08));
+      pointer-events: none;
+    }
 
-  #yesContent p {
-    font-size: 1.35em;
-    color: #6d3a55;
-    max-width: 800px;
-    margin: 14px auto;
-    line-height: 1.6;
-  }
-</style>
+    @keyframes riseIn {
+      from {
+        opacity: 0;
+        transform: translateY(22px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .tiny {
+      font-size: 0.9rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #b9638e;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      margin: 0;
+      position: relative;
+      z-index: 1;
+      color: var(--pink-dark);
+      line-height: 1.12;
+      font-size: clamp(2rem, 7vw, 3.1rem);
+      text-shadow: 0 6px 24px rgba(255,255,255,0.65);
+    }
+
+    p {
+      position: relative;
+      z-index: 1;
+      margin: 14px auto 0;
+      line-height: 1.6;
+      font-size: clamp(1rem, 3.9vw, 1.12rem);
+      max-width: 32ch;
+    }
+
+    .heroEmoji {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+      animation: pulseSoft 2.8s ease-in-out infinite;
+    }
+
+    @keyframes pulseSoft {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    .buttons {
+      position: relative;
+      z-index: 2;
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 15px 22px;
+      min-width: 132px;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: transform 0.2s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .primary {
+      color: white;
+      background: linear-gradient(135deg, var(--pink), var(--pink-soft));
+    }
+
+    .secondary {
+      color: white;
+      background: linear-gradient(135deg, #888, #b0b0b0);
+    }
+
+    .ghost {
+      color: var(--pink-dark);
+      background: rgba(255,255,255,0.75);
+      border: 1px solid rgba(255,255,255,0.9);
+    }
+
+    .primary:hover,
+    .secondary:hover,
+    .ghost:hover {
+      transform: translateY(-2px);
+    }
+
+    .reactionWrap {
+      margin-top: 18px;
+      min-height: 84px;
+      position: relative;
+      z-index: 2;
+    }
+
+    #reaction {
+      font-size: 2rem;
+      min-height: 40px;
+    }
+
+    #sadMessage {
+      margin-top: 8px;
+      font-size: 1rem;
+      color: #7a3b55;
+      line-height: 1.5;
+      padding: 0 8px;
+    }
+
+    .sparkle,
+    .flower,
+    .heartFloat {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
+      user-select: none;
+    }
+
+    .sparkle {
+      font-size: clamp(16px, 4vw, 26px);
+      animation: twinkle 3s ease-in-out infinite;
+      opacity: 0.85;
+    }
+
+    .flower {
+      font-size: clamp(18px, 4vw, 24px);
+      animation: sway 5s ease-in-out infinite alternate;
+      opacity: 0.85;
+    }
+
+    @keyframes twinkle {
+      0%, 100% {
+        transform: scale(0.8);
+        opacity: 0.4;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+    }
+
+    @keyframes sway {
+      from { transform: translateY(0) rotate(-8deg); }
+      to { transform: translateY(-6px) rotate(8deg); }
+    }
+
+    .heartBurst {
+      position: absolute;
+      font-size: 22px;
+      animation: burstUp 3.8s linear forwards;
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    @keyframes burstUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(0.7);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-220px) scale(1.35);
+      }
+    }
+
+    .grass {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 120px;
+      background: linear-gradient(to top, #46a53d, #8be47c);
+      z-index: 1;
+    }
+
+    .grass::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.75;
+      background-image:
+        radial-gradient(circle at 8% 100%, #2e8330 0 18px, transparent 19px),
+        radial-gradient(circle at 16% 100%, #37933b 0 15px, transparent 16px),
+        radial-gradient(circle at 29% 100%, #2f8333 0 19px, transparent 20px),
+        radial-gradient(circle at 42% 100%, #388f39 0 17px, transparent 18px),
+        radial-gradient(circle at 56% 100%, #2f8333 0 22px, transparent 23px),
+        radial-gradient(circle at 70% 100%, #37933b 0 18px, transparent 19px),
+        radial-gradient(circle at 83% 100%, #2e8330 0 16px, transparent 17px),
+        radial-gradient(circle at 95% 100%, #388f39 0 19px, transparent 20px);
+    }
+
+    .butterfly {
+      position: absolute;
+      z-index: 3;
+      font-size: clamp(22px, 5vw, 32px);
+      animation: fly 11s linear infinite;
+      opacity: 0.95;
+      filter: drop-shadow(0 4px 10px rgba(255,255,255,0.5));
+    }
+
+    .b1 { left: 4%; bottom: 88px; animation-delay: 0s; }
+    .b2 { left: 18%; bottom: 72px; animation-delay: 2s; }
+    .b3 { left: 44%; bottom: 92px; animation-delay: 4.5s; }
+    .b4 { left: 70%; bottom: 76px; animation-delay: 1.2s; }
+    .b5 { left: 86%; bottom: 82px; animation-delay: 3.2s; }
+
+    @keyframes fly {
+      0% {
+        transform: translate(0,0) scale(1) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      25% {
+        transform: translate(28px,-70px) scale(1.05) rotate(7deg);
+      }
+      50% {
+        transform: translate(-12px,-150px) scale(1.1) rotate(-6deg);
+      }
+      75% {
+        transform: translate(40px,-240px) scale(1.07) rotate(8deg);
+      }
+      100% {
+        transform: translate(0,-330px) scale(1.13) rotate(-8deg);
+        opacity: 0;
+      }
+    }
+
+    .yesScene {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255,255,255,0.75) 0 12%, transparent 13%),
+        linear-gradient(180deg, #fff7fb 0%, #ffeaf3 45%, #e9fbff 100%);
+    }
+
+    .yesContent {
+      position: relative;
+      z-index: 4;
+      text-align: center;
+      padding: 64px 20px 150px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .yesContent h1 {
+      font-size: clamp(2.2rem, 8vw, 4rem);
+      margin-bottom: 10px;
+    }
+
+    .yesContent p {
+      max-width: 34ch;
+      font-size: clamp(1rem, 4vw, 1.24rem);
+    }
+
+    .introCard {
+      padding-top: 34px;
+      padding-bottom: 30px;
+    }
+
+    .popQuestion {
+      animation: popIn 0.7s cubic-bezier(.2,.8,.2,1);
+    }
+
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: scale(.82) translateY(18px);
+      }
+      65% {
+        opacity: 1;
+        transform: scale(1.04) translateY(0);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .hint {
+      margin-top: 12px;
+      font-size: 0.96rem;
+      color: #a1537c;
+    }
+
+    @media (max-width: 480px) {
+      .screen {
+        padding: 14px 12px 115px;
+      }
+
+      .card {
+        border-radius: 24px;
+        padding: 22px 15px 22px;
+      }
+
+      .buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        width: 100%;
+        min-width: 0;
+        padding: 15px 18px;
+        font-size: 1rem;
+      }
+
+      .yesContent {
+        padding-top: 52px;
+      }
+
+      .grass {
+        height: 105px;
+      }
+    }
+
+    @media (min-width: 700px) {
+      .card {
+        width: min(100%, 520px);
+        padding: 34px 26px 28px;
+      }
+
+      .buttons {
+        gap: 14px;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="orb"></div>
+  <div class="orb2"></div>
+  <div class="orb3"></div>
 
-<div id="mainScreen">
-  <h1>Will you marry me? 💍</h1>
-  <p>My heart already knows the answer it wants 💖</p>
+  <!-- INTRO SCREEN -->
+  <section class="screen active" id="introScreen">
+    <div class="card introCard popQuestion">
+      <div class="heroEmoji">💌✨</div>
+      <div class="tiny">For My Precious Riziki</div>
+      <h1>I have something important to ask you...</h1>
+      <p>
+        Before you continue, just know this comes from a very soft and loving heart. 💖
+      </p>
 
-  <div class="buttons">
-    <button id="yes" class="btn">Yes</button>
-    <button id="no" class="btn">No</button>
-  </div>
+      <div class="buttons">
+        <button class="btn primary" id="nextBtn">Next</button>
+      </div>
 
-  <div id="reaction"></div>
-  <div id="sadMessage"></div>
+      <div class="hint">Tap next, my love 🌸</div>
+    </div>
+  </section>
 
-  <div class="sparkle" style="top:12%; left:12%;">✨</div>
-  <div class="sparkle" style="top:20%; right:15%;">🌸</div>
-  <div class="sparkle" style="top:35%; left:20%;">✨</div>
-  <div class="sparkle" style="top:30%; right:25%;">💖</div>
-  <div class="sparkle" style="top:50%; left:10%;">✨</div>
-  <div class="sparkle" style="top:55%; right:12%;">🌷</div>
-</div>
+  <!-- MAIN PROPOSAL SCREEN -->
+  <section class="screen" id="mainScreen">
+    <div class="card">
+      <div class="heroEmoji">💍💕</div>
+      <div class="tiny">My Heart Knows</div>
+      <h1>Will you marry me?</h1>
+      <p>
+        You are one of the most beautiful things that ever happened to my heart,
+        and I want forever with you. ✨
+      </p>
 
-<div id="yesScreen">
-  <div id="yesContent">
-    <h1>She said YES! ❤️🦋</h1>
-    <p>
-      My precious, you just made this world more beautiful.
-      Thank you for choosing love, sweetness, and this beautiful forever with me. 💍
-    </p>
-    <p>
-      You are admired, appreciated, cherished, and loved more than words can explain. ✨💖
-    </p>
-  </div>
+      <div class="buttons">
+        <button class="btn primary" id="yesBtn">Yes 💖</button>
+        <button class="btn secondary" id="noBtn">No 🥺</button>
+      </div>
 
-  <div class="butterfly b1">🦋</div>
-  <div class="butterfly b2">🦋</div>
-  <div class="butterfly b3">🦋</div>
-  <div class="butterfly b4">🦋</div>
-  <div class="butterfly b5">🦋</div>
+      <div class="reactionWrap">
+        <div id="reaction"></div>
+        <div id="sadMessage"></div>
+      </div>
+    </div>
 
-  <div class="sparkle" style="top:10%; left:8%;">✨</div>
-  <div class="sparkle" style="top:16%; right:10%;">💖</div>
-  <div class="sparkle" style="top:28%; left:18%;">🌸</div>
-  <div class="sparkle" style="top:22%; right:22%;">✨</div>
-  <div class="sparkle" style="top:42%; left:75%;">💫</div>
-  <div class="sparkle" style="top:48%; left:12%;">🌷</div>
+    <div class="sparkle" style="top:10%; left:9%;">✨</div>
+    <div class="sparkle" style="top:17%; right:12%;">💖</div>
+    <div class="sparkle" style="top:32%; left:16%;">🌸</div>
+    <div class="sparkle" style="top:26%; right:22%;">✨</div>
+    <div class="flower" style="bottom:14%; left:10%;">🌷</div>
+    <div class="flower" style="bottom:12%; right:12%;">🌸</div>
+  </section>
 
-  <div class="grass"></div>
-</div>
+  <!-- YES SCREEN -->
+  <section class="screen" id="yesScreen">
+    <div class="yesScene">
+      <div class="yesContent">
+        <div class="heroEmoji" style="font-size:2.3rem;">🦋💖✨</div>
+        <h1>Thank you babe for saying YES! ❤️</h1>
+        <p>
+          My precious, you just made this world brighter, softer, and more beautiful.
+          Thank you for choosing this love and this beautiful forever with me. its Bonome $ Riziki Forever ❤️💍
+        </p>
+        <p>
+          You are cherished, admired, appreciated, and loved more deeply than words can ever fully say. 🌸
+        </p>
+      </div>
 
-<script>
-  const noBtn = document.getElementById("no");
-  const yesBtn = document.getElementById("yes");
-  const reaction = document.getElementById("reaction");
-  const sadMessage = document.getElementById("sadMessage");
-  const mainScreen = document.getElementById("mainScreen");
-  const yesScreen = document.getElementById("yesScreen");
+      <div class="butterfly b1">🦋</div>
+      <div class="butterfly b2">🦋</div>
+      <div class="butterfly b3">🦋</div>
+      <div class="butterfly b4">🦋</div>
+      <div class="butterfly b5">🦋</div>
 
-  const sadFaces = [
-    "🥺",
-    "😢",
-    "😭",
-    "💔",
-    "😞",
-    "🥹",
-    "😩",
-    "😭💔"
-  ];
+      <div class="sparkle" style="top:10%; left:7%;">✨</div>
+      <div class="sparkle" style="top:16%; right:10%;">💖</div>
+      <div class="sparkle" style="top:24%; left:18%;">🌸</div>
+      <div class="sparkle" style="top:22%; right:22%;">✨</div>
+      <div class="sparkle" style="top:42%; left:78%;">💫</div>
+      <div class="sparkle" style="top:48%; left:12%;">🌷</div>
 
-  const sadTexts = [
-    "Oh no... don’t do this to my heart 💔",
-    "Please think again, my precious 🥺",
-    "That answer is making me dramatically sad 😭",
-    "My heart just slipped a little 😢",
-    "No? Even after all this love? 🥹",
-    "I’m still hoping for a sweeter answer 💖"
-  ];
+      <div class="grass"></div>
+    </div>
+  </section>
 
-  let noCount = 0;
+  <script>
+    const introScreen = document.getElementById("introScreen");
+    const mainScreen = document.getElementById("mainScreen");
+    const yesScreen = document.getElementById("yesScreen");
 
-  function createHeartBurst() {
-    for (let i = 0; i < 8; i++) {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.textContent = ["💖","💕","💗","✨","🌸"][Math.floor(Math.random() * 5)];
-      heart.style.left = (window.innerWidth / 2 + (Math.random() * 180 - 90)) + "px";
-      heart.style.top = (window.innerHeight * 0.65 + Math.random() * 40) + "px";
-      heart.style.fontSize = (18 + Math.random() * 20) + "px";
-      document.body.appendChild(heart);
+    const nextBtn = document.getElementById("nextBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
 
-      setTimeout(() => heart.remove(), 4000);
+    const reaction = document.getElementById("reaction");
+    const sadMessage = document.getElementById("sadMessage");
+
+    const sadFaces = ["🥺", "😢", "😭", "💔", "😞", "🥹", "😩", "😭💔"];
+    const sadTexts = [
+      "Oh no... babe don’t do this to my heart 💔",
+      "Please think again, my precious 🥺",
+      "That answer is making me dramatically sad 😭",
+      "My heart just slipped a little 😢",
+      "No? Even after all this love? 🥹",
+      "I’m still hoping for a sweeter answer 💖"
+    ];
+
+    let noCount = 0;
+
+    function showScreen(screenToShow) {
+      [introScreen, mainScreen, yesScreen].forEach(screen => {
+        screen.classList.remove("active");
+      });
+      screenToShow.classList.add("active");
     }
-  }
 
-  noBtn.addEventListener("click", () => {
-    reaction.textContent = sadFaces[noCount % sadFaces.length] + " " + sadFaces[(noCount + 2) % sadFaces.length];
-    sadMessage.textContent = sadTexts[noCount % sadTexts.length];
-    noCount++;
+    function createHeartBurst() {
+      const symbols = ["💖", "💕", "💗", "✨", "🌸"];
+      for (let i = 0; i < 8; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heartBurst";
+        heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        heart.style.left = (window.innerWidth / 2 + (Math.random() * 180 - 90)) + "px";
+        heart.style.top = (window.innerHeight * 0.62 + Math.random() * 40) + "px";
+        heart.style.fontSize = (18 + Math.random() * 18) + "px";
+        document.body.appendChild(heart);
 
-    yesBtn.style.transform = `scale(${1 + noCount * 0.08})`;
-    yesBtn.style.boxShadow = "0 12px 28px rgba(255, 79, 154, 0.35)";
-    createHeartBurst();
-  });
+        setTimeout(() => heart.remove(), 3800);
+      }
+    }
 
-  yesBtn.addEventListener("click", () => {
-    mainScreen.style.display = "none";
-    yesScreen.style.display = "block";
-  });
-</script>
+    nextBtn.addEventListener("click", () => {
+      showScreen(mainScreen);
+    });
 
+    noBtn.addEventListener("click", () => {
+      reaction.textContent =
+        sadFaces[noCount % sadFaces.length] + " " +
+        sadFaces[(noCount + 2) % sadFaces.length];
+
+      sadMessage.textContent = sadTexts[noCount % sadTexts.length];
+      noCount++;
+
+      yesBtn.style.transform = `scale(${1 + noCount * 0.08})`;
+      yesBtn.style.boxShadow = "0 14px 32px rgba(255, 79, 154, 0.35)";
+      createHeartBurst();
+    });
+
+    yesBtn.addEventListener("click", () => {
+      showScreen(yesScreen);
+    });
+  </script>
 </body>
 </html>
