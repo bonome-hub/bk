@@ -6,482 +6,316 @@
   <title>Rizo, I Have an Important Question</title>
 
   <style>
-    :root {
-      --bg1: #fff7fb;
-      --bg2: #ffe2ef;
-      --bg3: #dff6ff;
-      --pink: #ff4f9a;
-      --pink-dark: #d81b60;
-      --pink-soft: #ff93c3;
-      --text: #6b3550;
-      --white-glass: rgba(255, 255, 255, 0.35);
-      --white-line: rgba(255, 255, 255, 0.5);
-      --shadow: 0 16px 45px rgba(216, 27, 96, 0.14);
+    :root{
+      --pink:#ff4f9a;
+      --pink2:#ff8fc1;
+      --pinkDark:#cc2d75;
+      --text:#6d3552;
+      --bgTop:#fff7fb;
+      --bgMid:#ffe4f0;
+      --bgBottom:#eaf8ff;
     }
 
-    * {
-      box-sizing: border-box;
+    *{
+      box-sizing:border-box;
       -webkit-tap-highlight-color: transparent;
     }
 
-    html,
-    body {
-      margin: 0;
-      width: 100%;
-      min-height: 100%;
+    html, body{
+      margin:0;
+      padding:0;
+      width:100%;
+      min-height:100%;
       font-family: Arial, sans-serif;
-      overflow: hidden;
+      background: linear-gradient(180deg, var(--bgTop), var(--bgMid), var(--bgBottom));
+      color:var(--text);
     }
 
-    body {
-      position: relative;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 15% 18%, rgba(255,255,255,0.85) 0 8%, transparent 9%),
-        radial-gradient(circle at 82% 12%, rgba(255,255,255,0.7) 0 7%, transparent 8%),
-        linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 55%, var(--bg3) 100%);
+    body{
+      min-height:100vh;
+      position:relative;
+      overflow:hidden;
     }
 
-    .orb,
-    .orb2,
-    .orb3 {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(28px);
-      pointer-events: none;
-      z-index: 0;
-      animation: floatBlob 10s ease-in-out infinite alternate;
+    .screen{
+      position:absolute;
+      inset:0;
+      display:none;
+      justify-content:center;
+      align-items:center;
+      padding:20px 14px 90px;
     }
 
-    .orb {
-      width: 190px;
-      height: 190px;
-      background: rgba(255, 180, 213, 0.45);
-      top: 4%;
-      left: -45px;
+    .screen.active{
+      display:flex;
     }
 
-    .orb2 {
-      width: 220px;
-      height: 220px;
-      background: rgba(194, 236, 255, 0.5);
-      right: -60px;
-      top: 20%;
-      animation-duration: 12s;
+    .card{
+      width:100%;
+      max-width:420px;
+      background: rgba(255,255,255,0.88);
+      border:1px solid rgba(255,255,255,0.95);
+      border-radius:24px;
+      box-shadow:0 14px 40px rgba(204,45,117,0.12);
+      padding:26px 18px;
+      text-align:center;
+      position:relative;
+      z-index:3;
+      animation: popIn .55s ease;
     }
 
-    .orb3 {
-      width: 160px;
-      height: 160px;
-      background: rgba(255, 217, 235, 0.45);
-      bottom: 12%;
-      left: 30%;
-      animation-duration: 14s;
-    }
-
-    @keyframes floatBlob {
-      from {
-        transform: translateY(0) translateX(0) scale(1);
+    @keyframes popIn{
+      from{
+        opacity:0;
+        transform: translateY(24px) scale(.96);
       }
-      to {
-        transform: translateY(18px) translateX(10px) scale(1.06);
-      }
-    }
-
-    .screen {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px 16px 120px;
-    }
-
-    .screen.active {
-      display: flex;
-    }
-
-    .card {
-      position: relative;
-      width: min(100%, 430px);
-      padding: 26px 18px 24px;
-      border-radius: 28px;
-      background: var(--white-glass);
-      border: 1px solid var(--white-line);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: var(--shadow);
-      text-align: center;
-      overflow: hidden;
-      animation: riseIn 0.8s ease;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(135deg, rgba(255,255,255,0.42), rgba(255,255,255,0.08));
-      pointer-events: none;
-    }
-
-    @keyframes riseIn {
-      from {
-        opacity: 0;
-        transform: translateY(22px) scale(0.97);
-      }
-      to {
-        opacity: 1;
+      to{
+        opacity:1;
         transform: translateY(0) scale(1);
       }
     }
 
-    .tiny {
-      font-size: 0.9rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #b9638e;
-      margin-bottom: 12px;
-      position: relative;
-      z-index: 1;
+    .tiny{
+      font-size:.86rem;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:#b9658d;
+      margin-bottom:10px;
     }
 
-    h1 {
-      margin: 0;
-      position: relative;
-      z-index: 1;
-      color: var(--pink-dark);
-      line-height: 1.12;
-      font-size: clamp(2rem, 7vw, 3.1rem);
-      text-shadow: 0 6px 24px rgba(255,255,255,0.65);
+    .heroEmoji{
+      font-size:2rem;
+      margin-bottom:8px;
+      animation: pulse 2.6s ease-in-out infinite;
     }
 
-    p {
-      position: relative;
-      z-index: 1;
-      margin: 14px auto 0;
-      line-height: 1.6;
-      font-size: clamp(1rem, 3.9vw, 1.12rem);
-      max-width: 32ch;
+    @keyframes pulse{
+      0%,100%{transform:scale(1)}
+      50%{transform:scale(1.08)}
     }
 
-    .heroEmoji {
-      font-size: 2rem;
-      margin-bottom: 10px;
-      position: relative;
-      z-index: 1;
-      animation: pulseSoft 2.8s ease-in-out infinite;
+    h1{
+      margin:0;
+      color:var(--pinkDark);
+      font-size:clamp(2rem, 7vw, 3rem);
+      line-height:1.12;
     }
 
-    @keyframes pulseSoft {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.08); }
+    p{
+      margin:14px auto 0;
+      line-height:1.55;
+      font-size:clamp(1rem, 4vw, 1.08rem);
+      max-width:30ch;
     }
 
-    .buttons {
-      position: relative;
-      z-index: 2;
-      margin-top: 24px;
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
+    .buttons{
+      margin-top:24px;
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
     }
 
-    .btn {
-      appearance: none;
-      border: none;
-      cursor: pointer;
-      border-radius: 999px;
-      padding: 15px 22px;
-      min-width: 132px;
-      font-size: 1rem;
-      font-weight: 700;
-      transition: transform 0.2s ease, box-shadow 0.25s ease, opacity 0.25s ease;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    .btn{
+      border:none;
+      border-radius:999px;
+      padding:15px 22px;
+      min-width:130px;
+      font-size:1rem;
+      font-weight:700;
+      cursor:pointer;
+      transition:transform .2s ease, box-shadow .25s ease;
+      box-shadow:0 10px 24px rgba(0,0,0,0.12);
     }
 
-    .btn:active {
-      transform: scale(0.97);
+    .btn:active{
+      transform:scale(.97);
     }
 
-    .primary {
-      color: white;
-      background: linear-gradient(135deg, var(--pink), var(--pink-soft));
+    .primary{
+      color:white;
+      background:linear-gradient(135deg, var(--pink), var(--pink2));
     }
 
-    .secondary {
-      color: white;
-      background: linear-gradient(135deg, #888, #b0b0b0);
+    .secondary{
+      color:white;
+      background:linear-gradient(135deg, #8f8f8f, #bbbbbb);
     }
 
-    .ghost {
-      color: var(--pink-dark);
-      background: rgba(255,255,255,0.75);
-      border: 1px solid rgba(255,255,255,0.9);
+    .hint{
+      margin-top:12px;
+      color:#a3527c;
+      font-size:.95rem;
     }
 
-    .primary:hover,
-    .secondary:hover,
-    .ghost:hover {
-      transform: translateY(-2px);
+    .reactionWrap{
+      min-height:84px;
+      margin-top:18px;
     }
 
-    .reactionWrap {
-      margin-top: 18px;
-      min-height: 84px;
-      position: relative;
-      z-index: 2;
+    #reaction{
+      min-height:36px;
+      font-size:2rem;
     }
 
-    #reaction {
-      font-size: 2rem;
-      min-height: 40px;
+    #sadMessage{
+      margin-top:8px;
+      font-size:1rem;
+      line-height:1.5;
+      color:#7a3b55;
     }
 
-    #sadMessage {
-      margin-top: 8px;
-      font-size: 1rem;
-      color: #7a3b55;
-      line-height: 1.5;
-      padding: 0 8px;
+    .bubble, .sparkle{
+      position:absolute;
+      pointer-events:none;
+      user-select:none;
+      z-index:1;
     }
 
-    .sparkle,
-    .flower,
-    .heartFloat {
-      position: absolute;
-      pointer-events: none;
-      z-index: 1;
-      user-select: none;
+    .bubble{
+      border-radius:50%;
+      filter:blur(6px);
+      opacity:.45;
+      animation: floaty 8s ease-in-out infinite alternate;
     }
 
-    .sparkle {
-      font-size: clamp(16px, 4vw, 26px);
+    .b1{
+      width:120px;height:120px;
+      background:#ffd3e7;
+      top:4%; left:-20px;
+    }
+
+    .b2{
+      width:150px;height:150px;
+      background:#d7f2ff;
+      top:18%; right:-35px;
+      animation-duration:11s;
+    }
+
+    .b3{
+      width:90px;height:90px;
+      background:#ffe5f1;
+      bottom:18%; left:18%;
+      animation-duration:9s;
+    }
+
+    @keyframes floaty{
+      from{transform:translateY(0) translateX(0)}
+      to{transform:translateY(16px) translateX(8px)}
+    }
+
+    .sparkle{
+      font-size:22px;
       animation: twinkle 3s ease-in-out infinite;
-      opacity: 0.85;
     }
 
-    .flower {
-      font-size: clamp(18px, 4vw, 24px);
-      animation: sway 5s ease-in-out infinite alternate;
-      opacity: 0.85;
+    @keyframes twinkle{
+      0%,100%{opacity:.4; transform:scale(.85)}
+      50%{opacity:1; transform:scale(1.2)}
     }
 
-    @keyframes twinkle {
-      0%, 100% {
-        transform: scale(0.8);
-        opacity: 0.4;
+    .heartBurst{
+      position:absolute;
+      z-index:6;
+      pointer-events:none;
+      animation: burst 3.3s linear forwards;
+    }
+
+    @keyframes burst{
+      from{
+        opacity:1;
+        transform:translateY(0) scale(.7);
       }
-      50% {
-        transform: scale(1.2);
-        opacity: 1;
-      }
-    }
-
-    @keyframes sway {
-      from { transform: translateY(0) rotate(-8deg); }
-      to { transform: translateY(-6px) rotate(8deg); }
-    }
-
-    .heartBurst {
-      position: absolute;
-      font-size: 22px;
-      animation: burstUp 3.8s linear forwards;
-      pointer-events: none;
-      z-index: 6;
-    }
-
-    @keyframes burstUp {
-      0% {
-        opacity: 1;
-        transform: translateY(0) scale(0.7);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-220px) scale(1.35);
+      to{
+        opacity:0;
+        transform:translateY(-180px) scale(1.3);
       }
     }
 
-    .grass {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 120px;
-      background: linear-gradient(to top, #46a53d, #8be47c);
-      z-index: 1;
+    .yesScene{
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, #fff8fc, #ffeaf3 48%, #ebfbff 100%);
+      overflow:hidden;
     }
 
-    .grass::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      opacity: 0.75;
-      background-image:
-        radial-gradient(circle at 8% 100%, #2e8330 0 18px, transparent 19px),
-        radial-gradient(circle at 16% 100%, #37933b 0 15px, transparent 16px),
-        radial-gradient(circle at 29% 100%, #2f8333 0 19px, transparent 20px),
-        radial-gradient(circle at 42% 100%, #388f39 0 17px, transparent 18px),
-        radial-gradient(circle at 56% 100%, #2f8333 0 22px, transparent 23px),
-        radial-gradient(circle at 70% 100%, #37933b 0 18px, transparent 19px),
-        radial-gradient(circle at 83% 100%, #2e8330 0 16px, transparent 17px),
-        radial-gradient(circle at 95% 100%, #388f39 0 19px, transparent 20px);
+    .yesContent{
+      position:relative;
+      z-index:3;
+      text-align:center;
+      max-width:700px;
+      margin:0 auto;
+      padding:56px 18px 140px;
     }
 
-    .butterfly {
-      position: absolute;
-      z-index: 3;
-      font-size: clamp(22px, 5vw, 32px);
+    .grass{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:105px;
+      background:linear-gradient(to top, #49a740, #8ee780);
+      z-index:1;
+    }
+
+    .butterfly{
+      position:absolute;
+      z-index:2;
+      font-size:28px;
       animation: fly 11s linear infinite;
-      opacity: 0.95;
-      filter: drop-shadow(0 4px 10px rgba(255,255,255,0.5));
+      opacity:.95;
     }
 
-    .b1 { left: 4%; bottom: 88px; animation-delay: 0s; }
-    .b2 { left: 18%; bottom: 72px; animation-delay: 2s; }
-    .b3 { left: 44%; bottom: 92px; animation-delay: 4.5s; }
-    .b4 { left: 70%; bottom: 76px; animation-delay: 1.2s; }
-    .b5 { left: 86%; bottom: 82px; animation-delay: 3.2s; }
+    .bf1{left:5%; bottom:78px; animation-delay:0s;}
+    .bf2{left:22%; bottom:66px; animation-delay:2.2s;}
+    .bf3{left:48%; bottom:84px; animation-delay:4.5s;}
+    .bf4{left:72%; bottom:70px; animation-delay:1.4s;}
+    .bf5{left:88%; bottom:76px; animation-delay:3.3s;}
 
-    @keyframes fly {
-      0% {
-        transform: translate(0,0) scale(1) rotate(0deg);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      25% {
-        transform: translate(28px,-70px) scale(1.05) rotate(7deg);
-      }
-      50% {
-        transform: translate(-12px,-150px) scale(1.1) rotate(-6deg);
-      }
-      75% {
-        transform: translate(40px,-240px) scale(1.07) rotate(8deg);
-      }
-      100% {
-        transform: translate(0,-330px) scale(1.13) rotate(-8deg);
-        opacity: 0;
-      }
+    @keyframes fly{
+      0%{transform:translate(0,0) scale(1); opacity:0}
+      10%{opacity:1}
+      50%{transform:translate(20px,-140px) scale(1.08)}
+      100%{transform:translate(-10px,-290px) scale(1.15); opacity:0}
     }
 
-    .yesScene {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 50% 18%, rgba(255,255,255,0.75) 0 12%, transparent 13%),
-        linear-gradient(180deg, #fff7fb 0%, #ffeaf3 45%, #e9fbff 100%);
-    }
-
-    .yesContent {
-      position: relative;
-      z-index: 4;
-      text-align: center;
-      padding: 64px 20px 150px;
-      max-width: 760px;
-      margin: 0 auto;
-    }
-
-    .yesContent h1 {
-      font-size: clamp(2.2rem, 8vw, 4rem);
-      margin-bottom: 10px;
-    }
-
-    .yesContent p {
-      max-width: 34ch;
-      font-size: clamp(1rem, 4vw, 1.24rem);
-    }
-
-    .introCard {
-      padding-top: 34px;
-      padding-bottom: 30px;
-    }
-
-    .popQuestion {
-      animation: popIn 0.7s cubic-bezier(.2,.8,.2,1);
-    }
-
-    @keyframes popIn {
-      0% {
-        opacity: 0;
-        transform: scale(.82) translateY(18px);
-      }
-      65% {
-        opacity: 1;
-        transform: scale(1.04) translateY(0);
-      }
-      100% {
-        transform: scale(1);
-      }
-    }
-
-    .hint {
-      margin-top: 12px;
-      font-size: 0.96rem;
-      color: #a1537c;
-    }
-
-    @media (max-width: 480px) {
-      .screen {
-        padding: 14px 12px 115px;
+    @media (max-width: 480px){
+      .buttons{
+        flex-direction:column;
       }
 
-      .card {
-        border-radius: 24px;
-        padding: 22px 15px 22px;
+      .btn{
+        width:100%;
+        min-width:0;
       }
 
-      .buttons {
-        flex-direction: column;
-        align-items: stretch;
+      .yesContent{
+        padding-top:46px;
       }
 
-      .btn {
-        width: 100%;
-        min-width: 0;
-        padding: 15px 18px;
-        font-size: 1rem;
-      }
-
-      .yesContent {
-        padding-top: 52px;
-      }
-
-      .grass {
-        height: 105px;
-      }
-    }
-
-    @media (min-width: 700px) {
-      .card {
-        width: min(100%, 520px);
-        padding: 34px 26px 28px;
-      }
-
-      .buttons {
-        gap: 14px;
+      .sparkle{
+        font-size:18px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="orb"></div>
-  <div class="orb2"></div>
-  <div class="orb3"></div>
 
-  <!-- INTRO SCREEN -->
+  <div class="bubble b1"></div>
+  <div class="bubble b2"></div>
+  <div class="bubble b3"></div>
+
+  <div class="sparkle" style="top:10%; left:10%;">✨</div>
+  <div class="sparkle" style="top:16%; right:10%;">💖</div>
+  <div class="sparkle" style="top:28%; left:18%;">🌸</div>
+  <div class="sparkle" style="top:25%; right:22%;">✨</div>
+
   <section class="screen active" id="introScreen">
-    <div class="card introCard popQuestion">
+    <div class="card">
       <div class="heroEmoji">💌✨</div>
       <div class="tiny">For My Precious Riziki</div>
       <h1>I have something important to ask you...</h1>
-      <p>
-        Before you continue, just know this comes from a very soft and loving heart. 💖
-      </p>
+      <p>Before you continue, just know this comes from a very soft and loving heart. 💖</p>
 
       <div class="buttons">
         <button class="btn primary" id="nextBtn">Next</button>
@@ -491,16 +325,12 @@
     </div>
   </section>
 
-  <!-- MAIN PROPOSAL SCREEN -->
   <section class="screen" id="mainScreen">
     <div class="card">
       <div class="heroEmoji">💍💕</div>
       <div class="tiny">My Heart Knows</div>
       <h1>Will you marry me?</h1>
-      <p>
-        You are one of the most beautiful things that ever happened to my heart,
-        and I want forever with you. ✨
-      </p>
+      <p>You are one of the most beautiful things that ever happened to my heart, and I want forever with you. ✨</p>
 
       <div class="buttons">
         <button class="btn primary" id="yesBtn">Yes 💖</button>
@@ -512,42 +342,22 @@
         <div id="sadMessage"></div>
       </div>
     </div>
-
-    <div class="sparkle" style="top:10%; left:9%;">✨</div>
-    <div class="sparkle" style="top:17%; right:12%;">💖</div>
-    <div class="sparkle" style="top:32%; left:16%;">🌸</div>
-    <div class="sparkle" style="top:26%; right:22%;">✨</div>
-    <div class="flower" style="bottom:14%; left:10%;">🌷</div>
-    <div class="flower" style="bottom:12%; right:12%;">🌸</div>
   </section>
 
-  <!-- YES SCREEN -->
   <section class="screen" id="yesScreen">
     <div class="yesScene">
       <div class="yesContent">
-        <div class="heroEmoji" style="font-size:2.3rem;">🦋💖✨</div>
+        <div class="heroEmoji" style="font-size:2.2rem;">🦋💖✨</div>
         <h1>Thank you babe for saying YES! ❤️</h1>
-        <p>
-          My precious, you just made this world brighter, softer, and more beautiful.
-          Thank you for choosing this love and this beautiful forever with me. its Bonome $ Riziki Forever ❤️💍
-        </p>
-        <p>
-          You are cherished, admired, appreciated, and loved more deeply than words can ever fully say. 🌸
-        </p>
+        <p>My precious, you just made this world brighter, softer, and more beautiful. Thank you for choosing this love and this beautiful forever with me. It’s Bonome &amp; Riziki forever ❤️💍</p>
+        <p>You are cherished, admired, appreciated, and loved more deeply than words can ever fully say. 🌸</p>
       </div>
 
-      <div class="butterfly b1">🦋</div>
-      <div class="butterfly b2">🦋</div>
-      <div class="butterfly b3">🦋</div>
-      <div class="butterfly b4">🦋</div>
-      <div class="butterfly b5">🦋</div>
-
-      <div class="sparkle" style="top:10%; left:7%;">✨</div>
-      <div class="sparkle" style="top:16%; right:10%;">💖</div>
-      <div class="sparkle" style="top:24%; left:18%;">🌸</div>
-      <div class="sparkle" style="top:22%; right:22%;">✨</div>
-      <div class="sparkle" style="top:42%; left:78%;">💫</div>
-      <div class="sparkle" style="top:48%; left:12%;">🌷</div>
+      <div class="butterfly bf1">🦋</div>
+      <div class="butterfly bf2">🦋</div>
+      <div class="butterfly bf3">🦋</div>
+      <div class="butterfly bf4">🦋</div>
+      <div class="butterfly bf5">🦋</div>
 
       <div class="grass"></div>
     </div>
@@ -561,11 +371,10 @@
     const nextBtn = document.getElementById("nextBtn");
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
-
     const reaction = document.getElementById("reaction");
     const sadMessage = document.getElementById("sadMessage");
 
-    const sadFaces = ["🥺", "😢", "😭", "💔", "😞", "🥹", "😩", "😭💔"];
+    const sadFaces = ["🥺","😢","😭","💔","😞","🥹","😩","😭💔"];
     const sadTexts = [
       "Oh no... babe don’t do this to my heart 💔",
       "Please think again, my precious 🥺",
@@ -577,25 +386,24 @@
 
     let noCount = 0;
 
-    function showScreen(screenToShow) {
-      [introScreen, mainScreen, yesScreen].forEach(screen => {
-        screen.classList.remove("active");
-      });
-      screenToShow.classList.add("active");
+    function showScreen(screen) {
+      introScreen.classList.remove("active");
+      mainScreen.classList.remove("active");
+      yesScreen.classList.remove("active");
+      screen.classList.add("active");
     }
 
     function createHeartBurst() {
-      const symbols = ["💖", "💕", "💗", "✨", "🌸"];
+      const symbols = ["💖","💕","💗","✨","🌸"];
       for (let i = 0; i < 8; i++) {
-        const heart = document.createElement("div");
-        heart.className = "heartBurst";
-        heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-        heart.style.left = (window.innerWidth / 2 + (Math.random() * 180 - 90)) + "px";
-        heart.style.top = (window.innerHeight * 0.62 + Math.random() * 40) + "px";
-        heart.style.fontSize = (18 + Math.random() * 18) + "px";
-        document.body.appendChild(heart);
-
-        setTimeout(() => heart.remove(), 3800);
+        const el = document.createElement("div");
+        el.className = "heartBurst";
+        el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        el.style.left = (window.innerWidth / 2 + (Math.random() * 170 - 85)) + "px";
+        el.style.top = (window.innerHeight * 0.62 + Math.random() * 30) + "px";
+        el.style.fontSize = (18 + Math.random() * 18) + "px";
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 3300);
       }
     }
 
