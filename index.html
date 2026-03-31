@@ -2,72 +2,306 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Rizo i have an Important Question</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rizo, I Have an Important Question</title>
 <style>
+  * {
+    box-sizing: border-box;
+  }
+
   body {
-    text-align: center;
+    margin: 0;
     font-family: Arial, sans-serif;
-    background: #ffe6f0;
     overflow: hidden;
+    background: linear-gradient(to top, #ffd6e8, #fff4fb, #e8f8ff);
+    text-align: center;
+    height: 100vh;
+    position: relative;
   }
 
   h1 {
-    margin-top: 100px;
-    font-size: 2.5em;
+    margin-top: 70px;
+    font-size: 2.8em;
+    color: #c2185b;
+    text-shadow: 0 2px 10px rgba(255,255,255,0.7);
+    z-index: 2;
+    position: relative;
+  }
+
+  p {
+    font-size: 1.2em;
+    color: #6a3552;
+    z-index: 2;
+    position: relative;
+  }
+
+  .buttons {
+    margin-top: 40px;
+    position: relative;
+    z-index: 3;
   }
 
   .btn {
-    padding: 15px 30px;
+    padding: 16px 34px;
     font-size: 18px;
     border: none;
-    border-radius: 10px;
+    border-radius: 14px;
     cursor: pointer;
-    position: absolute;
+    margin: 10px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+
+  .btn:hover {
+    transform: scale(1.08);
   }
 
   #yes {
-    background-color: #4CAF50;
+    background: linear-gradient(45deg, #ff4f9a, #ff85c2);
     color: white;
-    left: 45%;
-    top: 60%;
   }
 
   #no {
-    background-color: #f44336;
+    background: linear-gradient(45deg, #7a7a7a, #a8a8a8);
     color: white;
-    left: 55%;
-    top: 60%;
+  }
+
+  #reaction {
+    margin-top: 25px;
+    font-size: 2.1em;
+    min-height: 60px;
+    z-index: 3;
+    position: relative;
+  }
+
+  #sadMessage {
+    font-size: 1.2em;
+    color: #7a3b55;
+    min-height: 32px;
+    z-index: 3;
+    position: relative;
+  }
+
+  .heart {
+    position: absolute;
+    font-size: 24px;
+    animation: floatUp 4s linear forwards;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translateY(0) scale(0.7);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-220px) scale(1.4);
+      opacity: 0;
+    }
+  }
+
+  .grass {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(to top, #3f9b3a, #7fd96d);
+    z-index: 1;
+  }
+
+  .grass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 10% 100%, #2d7f2f 0 18px, transparent 19px),
+      radial-gradient(circle at 20% 100%, #2f8f33 0 16px, transparent 17px),
+      radial-gradient(circle at 35% 100%, #318b35 0 20px, transparent 21px),
+      radial-gradient(circle at 50% 100%, #2b7a2c 0 18px, transparent 19px),
+      radial-gradient(circle at 65% 100%, #318b35 0 22px, transparent 23px),
+      radial-gradient(circle at 80% 100%, #2f8f33 0 18px, transparent 19px),
+      radial-gradient(circle at 92% 100%, #2d7f2f 0 16px, transparent 17px);
+    opacity: 0.7;
+  }
+
+  .butterfly {
+    position: absolute;
+    font-size: 28px;
+    animation: fly 12s linear infinite;
+    opacity: 0.9;
+    z-index: 2;
+  }
+
+  .b1 { left: 5%; bottom: 90px; animation-delay: 0s; }
+  .b2 { left: 20%; bottom: 60px; animation-delay: 2s; }
+  .b3 { left: 45%; bottom: 100px; animation-delay: 4s; }
+  .b4 { left: 70%; bottom: 70px; animation-delay: 1s; }
+  .b5 { left: 85%; bottom: 80px; animation-delay: 3s; }
+
+  @keyframes fly {
+    0%   { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0; }
+    10%  { opacity: 1; }
+    25%  { transform: translate(40px, -80px) scale(1.05) rotate(8deg); }
+    50%  { transform: translate(-20px, -160px) scale(1.1) rotate(-6deg); }
+    75%  { transform: translate(60px, -240px) scale(1.05) rotate(10deg); }
+    100% { transform: translate(0, -340px) scale(1.15) rotate(-8deg); opacity: 0; }
+  }
+
+  .sparkle {
+    position: absolute;
+    font-size: 20px;
+    animation: twinkle 3s ease-in-out infinite;
+    z-index: 2;
+    opacity: 0.8;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { transform: scale(0.8); opacity: 0.4; }
+    50% { transform: scale(1.3); opacity: 1; }
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  #yesScreen {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, #fff0f7, #fffafc, #eafcff);
+    display: none;
+    overflow: hidden;
+  }
+
+  #yesContent {
+    position: relative;
+    z-index: 5;
+    margin-top: 80px;
+    padding: 20px;
+  }
+
+  #yesContent h1 {
+    margin-top: 0;
+    font-size: 3em;
+    color: #d81b60;
+  }
+
+  #yesContent p {
+    font-size: 1.35em;
+    color: #6d3a55;
+    max-width: 800px;
+    margin: 14px auto;
+    line-height: 1.6;
   }
 </style>
 </head>
 <body>
 
-<h1>Will you marry me? 💍</h1>
+<div id="mainScreen">
+  <h1>Will you marry me? 💍</h1>
+  <p>My heart already knows the answer it wants 💖</p>
 
-<button id="yes" class="btn">Yes</button>
-<button id="no" class="btn">No</button>
+  <div class="buttons">
+    <button id="yes" class="btn">Yes</button>
+    <button id="no" class="btn">No</button>
+  </div>
+
+  <div id="reaction"></div>
+  <div id="sadMessage"></div>
+
+  <div class="sparkle" style="top:12%; left:12%;">✨</div>
+  <div class="sparkle" style="top:20%; right:15%;">🌸</div>
+  <div class="sparkle" style="top:35%; left:20%;">✨</div>
+  <div class="sparkle" style="top:30%; right:25%;">💖</div>
+  <div class="sparkle" style="top:50%; left:10%;">✨</div>
+  <div class="sparkle" style="top:55%; right:12%;">🌷</div>
+</div>
+
+<div id="yesScreen">
+  <div id="yesContent">
+    <h1>She said YES! ❤️🦋</h1>
+    <p>
+      My precious, you just made this world more beautiful.
+      Thank you for choosing love, sweetness, and this beautiful forever with me. 💍
+    </p>
+    <p>
+      You are admired, appreciated, cherished, and loved more than words can explain. ✨💖
+    </p>
+  </div>
+
+  <div class="butterfly b1">🦋</div>
+  <div class="butterfly b2">🦋</div>
+  <div class="butterfly b3">🦋</div>
+  <div class="butterfly b4">🦋</div>
+  <div class="butterfly b5">🦋</div>
+
+  <div class="sparkle" style="top:10%; left:8%;">✨</div>
+  <div class="sparkle" style="top:16%; right:10%;">💖</div>
+  <div class="sparkle" style="top:28%; left:18%;">🌸</div>
+  <div class="sparkle" style="top:22%; right:22%;">✨</div>
+  <div class="sparkle" style="top:42%; left:75%;">💫</div>
+  <div class="sparkle" style="top:48%; left:12%;">🌷</div>
+
+  <div class="grass"></div>
+</div>
 
 <script>
   const noBtn = document.getElementById("no");
+  const yesBtn = document.getElementById("yes");
+  const reaction = document.getElementById("reaction");
+  const sadMessage = document.getElementById("sadMessage");
+  const mainScreen = document.getElementById("mainScreen");
+  const yesScreen = document.getElementById("yesScreen");
 
-  // Make "No" button run away
-  noBtn.addEventListener("mouseover", () => {
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 100);
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-  });
+  const sadFaces = [
+    "🥺",
+    "😢",
+    "😭",
+    "💔",
+    "😞",
+    "🥹",
+    "😩",
+    "😭💔"
+  ];
 
-  // If somehow clicked, open annoying tabs
-  noBtn.addEventListener("click", () => {
-    for (let i = 0; i < 10; i++) {
-      window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank");
+  const sadTexts = [
+    "Oh no... don’t do this to my heart 💔",
+    "Please think again, my precious 🥺",
+    "That answer is making me dramatically sad 😭",
+    "My heart just slipped a little 😢",
+    "No? Even after all this love? 🥹",
+    "I’m still hoping for a sweeter answer 💖"
+  ];
+
+  let noCount = 0;
+
+  function createHeartBurst() {
+    for (let i = 0; i < 8; i++) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = ["💖","💕","💗","✨","🌸"][Math.floor(Math.random() * 5)];
+      heart.style.left = (window.innerWidth / 2 + (Math.random() * 180 - 90)) + "px";
+      heart.style.top = (window.innerHeight * 0.65 + Math.random() * 40) + "px";
+      heart.style.fontSize = (18 + Math.random() * 20) + "px";
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 4000);
     }
+  }
+
+  noBtn.addEventListener("click", () => {
+    reaction.textContent = sadFaces[noCount % sadFaces.length] + " " + sadFaces[(noCount + 2) % sadFaces.length];
+    sadMessage.textContent = sadTexts[noCount % sadTexts.length];
+    noCount++;
+
+    yesBtn.style.transform = `scale(${1 + noCount * 0.08})`;
+    yesBtn.style.boxShadow = "0 12px 28px rgba(255, 79, 154, 0.35)";
+    createHeartBurst();
   });
 
-  // Yes button
-  document.getElementById("yes").addEventListener("click", () => {
-    document.body.innerHTML = "<h1>She said YES! ❤️</h1>";
+  yesBtn.addEventListener("click", () => {
+    mainScreen.style.display = "none";
+    yesScreen.style.display = "block";
   });
 </script>
 
